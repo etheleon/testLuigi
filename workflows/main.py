@@ -13,6 +13,12 @@ class mysection(luigi.Config):
     cores         = luigi.IntParameter(default=1)
     regexText     = luigi.Parameter()
 
+#class Diamond(luigi.Tast)
+    #require(self):
+
+    #run(self):
+
+    #output(self):
 
 class Merge(luigi.WrapperTask):
     """
@@ -67,6 +73,7 @@ class Fastqc(luigi.Task):
     """
     def requires(self):
         return Trim()
+
     def run(self):
         print "====== Running FastQC ======"
         samples = filter(lambda f: os.path.isdir(f), glob.glob(mysection().projectFolder+"/data/trimmed/*"))
@@ -80,6 +87,7 @@ class Fastqc(luigi.Task):
                 out = subprocess.check_output(cmd, shell=True)
                 logFile.write(out)
                 logFile.write("Sample: " + sample)
+
     def output(self):
         return luigi.LocalTarget("%s/logs/fastqc.logs" % mysection().projectFolder)
 
